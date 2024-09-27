@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte des Circulations de Henri Basset</title>
+    <!-- Leaflet CSS for map visualization -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Map container styling */
+        #map {
+            height: 600px;
+            width: 100%;
+            border: 2px solid rgba(0, 0, 255, 0.6);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 255, 0.6);
+            background: radial-gradient(circle, rgba(18, 18, 18, 0.7), rgba(0, 0, 0, 0.5));
+        }
+
+        /* Legends for the map */
+        .legend, .legend-left, .legend-circulations {
+            position: absolute;
+            background: rgba(0, 0, 50, 0.8);
+            color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 255, 0.5);
+            font-size: 14px;
+            line-height: 1.5;
+            z-index: 999;
+        }
+
+        .legend {
+            bottom: 30px;
+            right: 10px;
+        }
+
+        .legend-left {
+            top: 100px;
+            left: 10px;
+        }
+
+        .legend-circulations {
+            bottom: 30px;
+            left: 10px;
+        }
+
+        .legend i, .legend-circulations i {
+            display: inline-block;
+            width: 20px;
+            height: 10px;
+            margin-right: 5px;
+        }
+
+        /* Colors for the legend (consistent with map) */
+        .blue { background: blue; }
+        .yellow { background: yellow; }
+        .green { background: green; }
+        .purple { background: purple; }
+        .orange { background: orange; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center; color: blue;">Carte des Circulations de Henri Basset</h1>
+    <p style="text-align:center;">Explorez les régions où Henri Basset a mené ses recherches linguistiques, ethnographiques et architecturales.</p>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Main legend for research themes -->
+    <div class="legend">
+        <h4>Légende</h4>
+        <i class="blue"></i> Recherches linguistiques berbères<br>
+        <i class="yellow"></i> Études ethnographiques<br>
+        <i class="green"></i> Études des rituels marocains<br>
+        <i class="purple"></i> Collaborations scientifiques<br>
+        <i class="orange"></i> Études architecturales
+    </div>
+
+    <!-- Legend for specific circulations -->
+    <div class="legend-left">
+        <h4>Détails des Circulations</h4>
+        <i class="blue"></i> Kabylie (Études sur les dialectes berbères)<br>
+        <i class="yellow"></i> Algiers (Première formation académique)<br>
+        <i class="green"></i> Fès (Études des rituels marocains)<br>
+        <i class="purple"></i> Rabat (Collaborations scientifiques avec Terrasse)<br>
+        <i class="orange"></i> Marrakech (Études architecturales almohades)
+    </div>
+
+    <!-- Leaflet JS for the map -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([31.7917, -7.0926], 5); // North Africa
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+        }).addTo(map);
+
+        // Define custom markers based on contribution type
+        function getColor(circulation) {
+            switch (circulation) {
+                case 'Recherches linguistiques': return 'blue'; 
+                case 'Études ethnographiques': return 'yellow';
+                case 'Études des rituels marocains': return 'green'; 
+                case 'Collaboration scientifique': return 'purple'; 
+                case 'Études architecturales': return 'orange'; 
+                default: return 'black';
+            }
+        }
+
+        // Function to create markers with popups
+        function createCustomMarker(lat, lng, circulation, description) {
+            return L.circleMarker([lat, lng], {
+                color: getColor(circulation),
+                radius: 12,
+                fillOpacity: 0.8
+            }).addTo(map).bindPopup(`<b>${circulation}</b><br>${description}`);
+        }
+
+        // Add markers for Henri Basset's circulations
+        createCustomMarker(36.4667, 6.2836, 'Recherches linguistiques', 'Kabylie : Études sur les dialectes berbères.'); // Kabylie
+        createCustomMarker(36.7528, 3.042, 'Études ethnographiques', 'Alger : Formation académique à l\'École Normale Supérieure.'); // Algiers
+        createCustomMarker(34.0331, -4.9998, 'Études des rituels marocains', 'Fès : Études des rituels marocains et pratiques religieuses.'); // Fès
+        createCustomMarker(33.9716, -6.8498, 'Collaboration scientifique', 'Rabat : Collaborations scientifiques avec Henri Terrasse.'); // Rabat
+        createCustomMarker(31.6295, -7.9811, 'Études architecturales', 'Marrakech : Études des forteresses almohades.'); // Marrakech
+    </script>
+</body>
+</html>
